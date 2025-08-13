@@ -1,98 +1,136 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# CollaboTask API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
+CollaboTask API is a robust, scalable backend for a task management and collaboration application, built with **Nest.js**. It supports user authentication, board/task management, comments, and real-time notifications. Designed as a practice project for Nest.js interviews, it demonstrates key concepts like modular architecture, dependency injection, TypeORM, JWT authentication, WebSockets, and API documentation with Swagger.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Features
+- **User Authentication**: Register, login, and role-based access (admin/user) using JWT.
+- **Boards & Tasks**: CRUD operations for boards and tasks, with relational data (e.g., tasks belong to boards).
+- **Comments**: Add/edit comments on tasks for collaboration.
+- **Real-Time Updates**: WebSocket notifications for task assignments and updates.
+- **API Documentation**: Swagger UI at `/api` for endpoint exploration.
+- **Error Handling**: Custom exception filters for consistent responses.
+- **Testing**: Unit and end-to-end tests with Jest and Supertest.
 
-## Description
+### Tech Stack
+- **Framework**: Nest.js (TypeScript)
+- **Database**: PostgreSQL with TypeORM
+- **Authentication**: JWT via `@nestjs/jwt` and `@nestjs/passport`
+- **Real-Time**: WebSockets with `@nestjs/websockets` and Socket.io
+- **Validation**: `class-validator` and `class-transformer`
+- **Documentation**: Swagger via `@nestjs/swagger`
+- **Testing**: Jest, Supertest
+- **Linting/Formatting**: ESLint, Prettier
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Setup Instructions
 
-## Project setup
+### Prerequisites
+- **Node.js**: v18 or higher
+- **PostgreSQL**: v15 or higher
+- **npm**: v9 or higher
 
-```bash
-$ npm install
+### Installation
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd collabotask-api
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Set Up Environment Variables**:
+   Create a `.env` file in the root directory:
+   ```env
+   DATABASE_HOST=localhost
+   DATABASE_PORT=5432
+   DATABASE_USERNAME=your_username
+   DATABASE_PASSWORD=your_password
+   DATABASE_NAME=collabotask
+   JWT_SECRET=your-secret-key
+   ```
+
+4. **Set Up PostgreSQL**:
+   - Ensure PostgreSQL is running.
+   - Create a database named `collabotask`:
+     ```sql
+     CREATE DATABASE collabotask;
+     ```
+
+5. **Run Migrations**:
+   ```bash
+   npm run typeorm:migration:run
+   ```
+   Note: `synchronize: true` is enabled in development for simplicity. Disable in production.
+
+6. **Start the Application**:
+   ```bash
+   npm run start:dev
+   ```
+   - API runs at `http://localhost:3000`.
+   - Swagger UI available at `http://localhost:3000/api`.
+
+### Running Tests
+- **Unit Tests**:
+  ```bash
+  npm run test
+  ```
+- **End-to-End Tests**:
+  ```bash
+  npm run test:e2e
+  ```
+
+## API Endpoints
+Explore the full API documentation at `http://localhost:3000/api`. Key endpoints include:
+- **Auth**:
+  - `POST /auth/register`: Register a new user.
+  - `POST /auth/login`: Obtain a JWT token.
+- **Boards**:
+  - `POST /boards`: Create a board (authenticated).
+  - `GET /boards/:id`: Get a board with tasks.
+- **Tasks**:
+  - `POST /tasks`: Create a task (authenticated).
+  - `GET /tasks/:boardId`: List tasks for a board.
+- **Comments**:
+  - `POST /comments`: Add a comment to a task (authenticated).
+- **WebSockets**:
+  - Connect to `ws://localhost:3000` for real-time notifications (e.g., `taskUpdated` event).
+
+## Project Structure
+```
+collabotask-api/
+├── src/
+│   ├── auth/                 # Authentication module (JWT, roles)
+│   ├── boards/               # Board management module
+│   ├── tasks/                # Task management module
+│   ├── comments/             # Comment management module
+│   ├── common/               # Shared utilities (filters, interceptors)
+│   ├── websockets/           # Real-time notifications
+│   ├── config/               # Database configuration
+│   ├── app.module.ts         # Root module
+│   ├── main.ts               # Entry point
+│   └── swagger.ts            # Swagger setup
+├── test/                     # Unit and e2e tests
+├── .env                      # Environment variables
+└── README.md
 ```
 
-## Compile and run the project
+## Usage
+1. **Register/Login**: Use `/auth/register` and `/auth/login` to obtain a JWT token.
+2. **Manage Boards/Tasks**: Create boards and tasks, assign tasks to users.
+3. **Collaborate**: Add comments and receive real-time updates via WebSockets.
+4. **Test**: Use Postman or Swagger to interact with the API.
 
-```bash
-# development
-$ npm run start
+## Future Improvements
+- Add Redis for caching frequently accessed boards/tasks.
+- Implement file uploads for task attachments.
+- Split auth into a microservice using `@nestjs/microservices`.
+- Add email notifications with Nodemailer.
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Contributing
+This is a practice project for Nest.js interview preparation. Feel free to fork and extend with additional features like GraphQL or advanced testing.
 
 ## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT License. Created for educational purposes.
