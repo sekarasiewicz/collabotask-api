@@ -28,8 +28,28 @@ CollaboTask API is a robust, scalable backend for a task management and collabor
 - **Node.js**: v24 or higher
 - **PostgreSQL**: v17 or higher
 - **npm**: v11 or higher
+- **Docker & Docker Compose**: For running PostgreSQL in a container
 
-### Installation
+### Quick Start with Docker (Recommended)
+The easiest way to get started is using Docker Compose and Make:
+
+1. **Start PostgreSQL and Development Server**:
+   ```bash
+   make dev
+   ```
+   This will start PostgreSQL in a container and then start the development server.
+
+2. **Available Make Commands**:
+   ```bash
+   make help     # Show all available commands
+   make dev      # Start PostgreSQL and development server
+   make up       # Start PostgreSQL only
+   make down     # Stop PostgreSQL
+   make clean    # Stop PostgreSQL and remove volumes
+   make logs     # Show PostgreSQL logs
+   ```
+
+### Manual Installation
 1. **Clone the Repository**:
    ```bash
    git clone <repository-url>
@@ -44,19 +64,24 @@ CollaboTask API is a robust, scalable backend for a task management and collabor
 3. **Set Up Environment Variables**:
    Create a `.env` file in the root directory:
    ```env
+   # Database Configuration (Docker)
    DATABASE_HOST=localhost
    DATABASE_PORT=5432
-   DATABASE_USERNAME=your_username
-   DATABASE_PASSWORD=your_password
-   DATABASE_NAME=collabotask
+   DATABASE_USERNAME=postgres
+   DATABASE_PASSWORD=postgres
+   DATABASE_NAME=collabotask_dev
    JWT_SECRET=your-secret-key
    ```
 
 4. **Set Up PostgreSQL**:
+   **Option A: Using Docker (Recommended)**:
+   - The database will be automatically created when using `make dev` or `make up`
+   
+   **Option B: Local PostgreSQL**:
    - Ensure PostgreSQL is running.
-   - Create a database named `collabotask`:
+   - Create a database named `collabotask_dev`:
      ```sql
-     CREATE DATABASE collabotask;
+     CREATE DATABASE collabotask_dev;
      ```
 
 5. **Run Migrations**:
