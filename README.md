@@ -25,9 +25,9 @@ CollaboTask API is a robust, scalable backend for a task management and collabor
 ## Setup Instructions
 
 ### Prerequisites
-- **Node.js**: v18 or higher
-- **PostgreSQL**: v15 or higher
-- **npm**: v9 or higher
+- **Node.js**: v24 or higher
+- **PostgreSQL**: v17 or higher
+- **npm**: v11 or higher
 
 ### Installation
 1. **Clone the Repository**:
